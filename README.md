@@ -1,5 +1,12 @@
 # Expansión de los asentamientos humanos y transformación del uso de suelo en la Ciudad de México.
 
+> Proyecto Final · Módulo 5: 
+> Diplomado Manejo de bases de datos sql y nosql en un entorno de nube. — IIMAS, UNAM.    
+> **Integrantes del equipo:**
+>  Karla Yoloxochitl Erazo Amaya
+>  Omar Octavio Sánchez Parra
+
+---
 ## Descripción del proyecto
 
 La expansión urbana constituye un proceso de transformación territorial que puede modificar la distribución de los distintos usos de suelo y tipos de vegetación. En la Ciudad de México, el crecimiento de las zonas destinadas a asentamientos humanos puede ocurrir sobre superficies que anteriormente correspondían a actividades agrícolas, vegetación, pastizales u otros usos.
