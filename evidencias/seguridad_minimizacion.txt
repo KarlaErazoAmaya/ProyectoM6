@@ -1,0 +1,84 @@
+=== Semana 5: salida minimizada ===
+[
+        {
+                "usoPrevio" : "Agricultura de riego",
+                "usoActual" : "Asentamientos humanos",
+                "superficie" : {
+                        "usoPrevioHa" : 2306.126801,
+                        "usoActualHa" : 2609.414842,
+                        "areaTransicionM2" : 24555435.0169
+                },
+                "cambio" : {
+                        "tasa" : 13.61005
+                },
+                "alcaldias" : [
+                        "Cuauhtémoc"
+                ]
+        },
+        {
+                "usoPrevio" : "Vegetación secundaria",
+                "usoActual" : "Asentamientos humanos",
+                "superficie" : {
+                        "usoPrevioHa" : 7713.195663,
+                        "usoActualHa" : 8031.945678,
+                        "areaTransicionM2" : 72971246.6753
+                },
+                "cambio" : {
+                        "tasa" : 3.632767
+                },
+                "alcaldias" : [
+                        "Coyoacán",
+                        "Milpa Alta",
+                        "Xochimilco"
+                ]
+        },
+        {
+                "usoPrevio" : "Agricultura de riego",
+                "usoActual" : "Asentamientos humanos",
+                "superficie" : {
+                        "usoPrevioHa" : 859.433416,
+                        "usoActualHa" : 1091.614227,
+                        "areaTransicionM2" : 9067609.8012
+                },
+                "cambio" : {
+                        "tasa" : 21.007155
+                },
+                "alcaldias" : [
+                        "Azcapotzalco"
+                ]
+        },
+        {
+                "usoPrevio" : "Pastizal inducido o cultivado",
+                "usoActual" : "Asentamientos humanos",
+                "superficie" : {
+                        "usoPrevioHa" : 31.278634,
+                        "usoActualHa" : 40.36845,
+                        "areaTransicionM2" : 292885.9535
+                },
+                "cambio" : {
+                        "tasa" : 22.407687
+                },
+                "alcaldias" : [
+                        "Xochimilco"
+                ]
+        },
+        {
+                "usoPrevio" : "Cuerpos de agua",
+                "usoActual" : "Asentamientos humanos",
+                "superficie" : {
+                        "usoPrevioHa" : 54.374999,
+                        "usoActualHa" : 56.15015,
+                        "areaTransicionM2" : 575346.201
+                },
+                "cambio" : {
+                        "tasa" : 2.702253
+                },
+                "alcaldias" : [
+                        "Gustavo A. Madero"
+                ]
+        }
+]
+
+Documentos mostrados: 5
+La geometria completa fue excluida de la salida.
+La consulta conserva únicamente los campos necesarios para el análisis.
