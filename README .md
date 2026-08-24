@@ -359,7 +359,19 @@ y realizar consultas geoespaciales para responder la tercera pregunta específic
 
 La relación pertinente es de **intersección**, no de contención: entre polígonos de fuentes distintas la contención completa es infrecuente, mientras que el traslape parcial es exactamente lo que interesa detectar. El operador correspondiente es `$geoIntersects`.
 
-Este componente requiere incorporar una segunda colección con los polígonos de referencia, cuya procedencia, sistema de referencia y fecha de consulta deberán registrarse igual que los del conjunto principal.
+El componente se resolvió con `$geoIntersects` contra la colección
+`zonas_conservacion`, tres polígonos sintéticos que aproximan la distribución
+del suelo de conservación. La selección espacial devuelve 21 683 transiciones
+frente a las 13 123 que devolvería `$geoWithin`: esos 8 560 documentos de
+diferencia son los que cruzan un borde sin quedar contenidos, y son la
+evidencia de que ambos operadores no son equivalentes.
+
+Al añadir el filtro temático —uso posterior asentamientos humanos, excluyendo
+los registros cuyo uso previo ya era urbano— la selección queda en 5 524
+transiciones, agrupadas en siete usos previos.
+
+El detalle en [`docs/casos_control_geoespacial.md`](docs/casos_control_geoespacial.md)
+y [`docs/pipeline_geoespacial.md`](docs/pipeline_geoespacial.md).
 
 ---
 
@@ -423,6 +435,7 @@ URI="mongodb://127.0.0.1:27017/m6_nosql"
 $MONGOSH "$URI" --quiet scripts/02_consultas_base.js | tee evidencias/medicion_inicial.txt
 $MONGOSH "$URI" --quiet scripts/03_indices.js      | tee evidencias/medicion_posterior.txt
 $MONGOSH "$URI" --quiet scripts/04_validador.js    | tee evidencias/validador.txt
+$MONGOSH "$URI" --quiet scripts/05_geoespacial.js | tee evidencias/geoespacial.txt
 ```
 
 El orden importa: `02` mide sin índices secundarios y los elimina para garantizar el estado de partida; `03` los crea y repite exactamente las mismas consultas; `04` aplica el validador y ejecuta los casos de prueba. Cada script parte de un estado conocido, comprueba sus propios resultados y puede repetirse.
@@ -456,6 +469,8 @@ ProyectoM6/
 │   ├── medicion_inicial.md
 │   ├── indexacion.md
 │   └── validacion.md
+|   └── zonas_conservacion.json
+|   └── casos_control_geo.json
 │
 └── evidencias/
     ├── medicion_inicial.txt
@@ -484,10 +499,10 @@ El conjunto sintético no se versiona: pesa 35 MB, es un archivo generado y `gen
 - [x] Evaluación con `explain("executionStats")`
 - [x] Implementación de `$jsonSchema`
 - [x] Pruebas de validación
-- [ ] Colección de polígonos de referencia
-- [ ] Índice geoespacial `2dsphere`
-- [ ] Consultas geoespaciales
-- [ ] Seguridad y protección de datos
+- [x] Colección de polígonos de referencia
+- [x] Índice geoespacial `2dsphere`
+- [x] Consultas geoespaciales
+- [x] Seguridad y protección de datos
 - [ ] Interpretación de resultados
 - [ ] Conclusiones
 
