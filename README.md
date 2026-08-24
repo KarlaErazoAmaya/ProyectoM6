@@ -147,24 +147,26 @@ La geometría se conserva en formato GeoJSON para permitir posteriormente la cre
 
 ## Diccionario de datos del modelo
 
-| Campo | Tipo BSON | Descripción | Restricción |
+| Campo o ruta | Tipo BSON | Presencia | Restricción y justificación |
 |---|---|---|---|
-| `_id` | `int` | Identificador único de la transición | Único |
-| `usoPrevio` | `string/null` | Uso de suelo o vegetación de origen | Categorías presentes en la fuente |
-| `usoActual` | `string/null` | Uso de suelo o vegetación posterior | Categorías presentes en la fuente |
-| `superficie.usoPrevioHa` | `double` | Superficie asociada al uso previo | Valor no negativo |
-| `superficie.usoActualHa` | `double` | Superficie asociada al uso posterior | Valor no negativo |
-| `superficie.areaTransicionM2` | `double` | Área asociada a la geometría de la transición | Valor no negativo |
-| `cambio.descripcion` | `string/null` | Descripción de la transición | Puede ser nulo según la fuente |
-| `cambio.tasa` | `double` | Tasa de cambio | Puede ser positiva o negativa |
-| `cambio.clasificacionUso` | `int` | Clasificación del cambio de uso | Valores observados de 0 a 5 |
-| `cambio.clasificacionTasa` | `int` | Clasificación de la tasa | Valores observados de 0 a 5 |
-| `referencias.serieInicialId` | `int` | Identificador de la serie inicial | Entero |
-| `referencias.serieFinalId` | `int` | Identificador de la serie final | Entero |
-| `longitudGeometria` | `double` | Longitud asociada a la geometría | Valor no negativo |
-| `geometria` | `object` | Geometría GeoJSON | Obligatoria |
-| `geometria.type` | `string` | Tipo de geometría | `Polygon` o `MultiPolygon` |
-| `geometria.coordinates` | `array` | Coordenadas de la geometría | Estructura GeoJSON |
+| `_id` | `int` | Obligatorio | Identificador de la transición |
+| `usoPrevio` | `string` o `null` | Obligatorio | `enum` de las 8 categorías observadas, más `null`: la fuente presenta 1 de 44 registros sin uso declarado |
+| `usoActual` | `string` o `null` | Obligatorio | Mismo `enum` y misma razón |
+| `superficie` | `object` | Obligatorio | Subdocumento con las tres medidas |
+| `superficie.usoPrevioHa` | `double` | Obligatorio | `minimum: 0` — una superficie no puede ser negativa |
+| `superficie.usoActualHa` | `double` | Obligatorio | `minimum: 0` |
+| `superficie.areaTransicionM2` | `double` | Obligatorio | `minimum: 0` |
+| `cambio` | `object` | Obligatorio | Subdocumento del cambio observado |
+| `cambio.tasa` | `double` | Obligatorio | Sin cota: la fuente registra valores negativos y positivos |
+| `cambio.descripcion` | `string` o `null` | Opcional | `null` cuando los usos son nulos |
+| `cambio.clasificacionUso` | `int` | Obligatorio | Entre 0 y 5, como en la fuente |
+| `cambio.clasificacionTasa` | `int` | Obligatorio | Entre 0 y 5 |
+| `alcaldias` | `array` de `string` | Obligatorio | `minItems: 1` — toda transición ocurre en al menos una demarcación |
+| `geometria` | `object` | Obligatorio | GeoJSON; sólo `Polygon` o `MultiPolygon` |
+| `geometria.type` | `string` | Obligatorio | `enum: ["Polygon", "MultiPolygon"]` |
+| `geometria.coordenadas` | `array` | Obligatorio | Anillos de coordenadas |
+| `referencias` | `object` | Opcional | Identificadores de las series comparadas |
+| `longitudGeometria` | `double` | Opcional | Perímetro; no participa en ninguna consulta |
 
 ---
 
