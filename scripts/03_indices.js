@@ -30,8 +30,10 @@ var referencia = {
 
 // --- Estado conocido ------------------------------------------------------
 
+// Se preserva geometria_2dsphere: pertenece al componente geoespacial y
+// responde a un patron de consulta distinto del de los indices convencionales.
 coleccion.getIndexes().forEach(function (indice) {
-  if (indice.name !== "_id_") {
+  if (indice.name !== "_id_" && indice.name !== "geometria_2dsphere") {
     coleccion.dropIndex(indice.name);
   }
 });
