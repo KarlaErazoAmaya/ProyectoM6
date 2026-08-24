@@ -1,0 +1,210 @@
+[
+  {
+    "_id": 990001,
+    "usoPrevio": "Agricultura de temporal",
+    "usoActual": "Asentamientos humanos",
+    "superficie": {
+      "usoPrevioHa": 210.5,
+      "usoActualHa": 244.8,
+      "areaTransicionM2": 2105000.5
+    },
+    "cambio": {
+      "descripcion": "Agricultura de temporal -Asentamientos humanos",
+      "tasa": 6.4,
+      "clasificacionUso": 5,
+      "clasificacionTasa": 4
+    },
+    "referencias": {
+      "serieInicialId": 2,
+      "serieFinalId": 5
+    },
+    "alcaldias": [
+      "Tlalpan"
+    ],
+    "longitudGeometria": 5300.5,
+    "geometria": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            -99.14,
+            19.14
+          ],
+          [
+            -99.128,
+            19.14
+          ],
+          [
+            -99.128,
+            19.152
+          ],
+          [
+            -99.14,
+            19.152
+          ],
+          [
+            -99.14,
+            19.14
+          ]
+        ]
+      ]
+    },
+    "_nota": "Contenida por completo en ZC-01. Debe aparecer con $geoIntersects y tambien con $geoWithin."
+  },
+  {
+    "_id": 990002,
+    "usoPrevio": "Agricultura de temporal",
+    "usoActual": "Asentamientos humanos",
+    "superficie": {
+      "usoPrevioHa": 210.5,
+      "usoActualHa": 244.8,
+      "areaTransicionM2": 2105000.5
+    },
+    "cambio": {
+      "descripcion": "Agricultura de temporal -Asentamientos humanos",
+      "tasa": 6.4,
+      "clasificacionUso": 5,
+      "clasificacionTasa": 4
+    },
+    "referencias": {
+      "serieInicialId": 2,
+      "serieFinalId": 5
+    },
+    "alcaldias": [
+      "Tlalpan"
+    ],
+    "longitudGeometria": 5300.5,
+    "geometria": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            -99.2,
+            19.288
+          ],
+          [
+            -99.188,
+            19.288
+          ],
+          [
+            -99.188,
+            19.3
+          ],
+          [
+            -99.2,
+            19.3
+          ],
+          [
+            -99.2,
+            19.288
+          ]
+        ]
+      ]
+    },
+    "_nota": "Cruza el borde norte de ZC-01. Debe aparecer con $geoIntersects y NO con $geoWithin: es el caso que distingue ambos operadores."
+  },
+  {
+    "_id": 990003,
+    "usoPrevio": "Agricultura de temporal",
+    "usoActual": "Asentamientos humanos",
+    "superficie": {
+      "usoPrevioHa": 210.5,
+      "usoActualHa": 244.8,
+      "areaTransicionM2": 2105000.5
+    },
+    "cambio": {
+      "descripcion": "Agricultura de temporal -Asentamientos humanos",
+      "tasa": 6.4,
+      "clasificacionUso": 5,
+      "clasificacionTasa": 4
+    },
+    "referencias": {
+      "serieInicialId": 2,
+      "serieFinalId": 5
+    },
+    "alcaldias": [
+      "Gustavo A. Madero"
+    ],
+    "longitudGeometria": 5300.5,
+    "geometria": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            -99.14,
+            19.48
+          ],
+          [
+            -99.128,
+            19.48
+          ],
+          [
+            -99.128,
+            19.492
+          ],
+          [
+            -99.14,
+            19.492
+          ],
+          [
+            -99.14,
+            19.48
+          ]
+        ]
+      ]
+    },
+    "_nota": "Situada al norte, lejos de cualquier zona. No debe aparecer con ningun operador espacial."
+  },
+  {
+    "_id": 990004,
+    "usoPrevio": "Agricultura de temporal",
+    "usoActual": "Vegetación secundaria",
+    "superficie": {
+      "usoPrevioHa": 210.5,
+      "usoActualHa": 244.8,
+      "areaTransicionM2": 2105000.5
+    },
+    "cambio": {
+      "descripcion": "Agricultura de temporal -Vegetación secundaria",
+      "tasa": 6.4,
+      "clasificacionUso": 3,
+      "clasificacionTasa": 4
+    },
+    "referencias": {
+      "serieInicialId": 2,
+      "serieFinalId": 5
+    },
+    "alcaldias": [
+      "Tlalpan"
+    ],
+    "longitudGeometria": 5300.5,
+    "geometria": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            -99.1,
+            19.12
+          ],
+          [
+            -99.088,
+            19.12
+          ],
+          [
+            -99.088,
+            19.132
+          ],
+          [
+            -99.1,
+            19.132
+          ],
+          [
+            -99.1,
+            19.12
+          ]
+        ]
+      ]
+    },
+    "_nota": "Contenida en ZC-01 pero su uso posterior no es asentamientos humanos. Satisface la condicion espacial y no la tematica: debe quedar excluida al anadir el filtro por usoActual."
+  }
+]
