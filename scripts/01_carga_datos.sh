@@ -106,20 +106,15 @@ ejecutar "
 
 echo ""
 echo "=== Comprobacion ==="
-ejecutar "
+ejecutar '
   var transiciones = db.cambios_uso_suelo.countDocuments({});
   var zonas = db.zonas_conservacion.countDocuments({});
-  print('Transiciones................. ' + transiciones);
-  print('  hacia asentamientos humanos ' +
-        db.cambios_uso_suelo.countDocuments({ usoActual: 'Asentamientos humanos' }));
-  print('  con uso nulo............... ' +
-        db.cambios_uso_suelo.countDocuments({ usoActual: null }));
-  print('Zonas de conservacion........ ' + zonas);
-  if (transiciones !== 50000) {
-    throw new Error('Se esperaban 50000 transiciones y se cargaron ' + transiciones);
-  }
-  if (zonas !== 3) {
-    throw new Error('Se esperaban 3 zonas y se cargaron ' + zonas);
-  }
-  print('');
-  print('Carga completa. Siguiente paso: scripts/02_consultas_base.js');
+  print("Transiciones................. " + transiciones);
+  print("  hacia asentamientos humanos " + db.cambios_uso_suelo.countDocuments({ usoActual: "Asentamientos humanos" }));
+  print("  con uso nulo............... " + db.cambios_uso_suelo.countDocuments({ usoActual: null }));
+  print("Zonas de conservacion........ " + zonas);
+  if (transiciones !== 50000) { throw new Error("Se esperaban 50000 transiciones y se cargaron " + transiciones); }
+  if (zonas !== 3) { throw new Error("Se esperaban 3 zonas y se cargaron " + zonas); }
+  print("");
+  print("Carga completa. Siguiente paso: scripts/02_consultas_base.js");
+'
