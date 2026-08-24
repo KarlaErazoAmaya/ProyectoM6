@@ -1,0 +1,128 @@
+=== Estado de partida ===
+  Transiciones................... 50000
+  Con geometria utilizable....... 50000
+  Zonas de conservacion.......... 3
+
+=== Indices de cambios_uso_suelo ===
+  _id_  {"_id":1}
+  geometria_2dsphere  {"geometria":"2dsphere"}
+
+=== Geometria de referencia ===
+  Zona.......... ZC-01, Sierra del Ajusco
+  Tipo.......... Polygon
+  Vertices...... 31
+  Anillo cerrado true
+
+=== Casos de control ===
+  $geoIntersects............... 990001, 990002, 990004
+  $geoWithin................... 990001, 990004
+  $geoIntersects + tematico.... 990001, 990002
+
+  990001  (contenida en ZC-01)
+    $geoIntersects.. esperado true, obtenido true
+    $geoWithin...... esperado true, obtenido true
+    con tematico.... esperado true, obtenido true
+    resultado....... correcto
+
+  990002  (cruza el borde norte)
+    $geoIntersects.. esperado true, obtenido true
+    $geoWithin...... esperado false, obtenido false
+    con tematico.... esperado true, obtenido true
+    resultado....... correcto
+
+  990003  (al norte, lejos de toda zona)
+    $geoIntersects.. esperado false, obtenido false
+    $geoWithin...... esperado false, obtenido false
+    con tematico.... esperado false, obtenido false
+    resultado....... correcto
+
+  990004  (contenida en ZC-01, uso posterior distinto)
+    $geoIntersects.. esperado true, obtenido true
+    $geoWithin...... esperado true, obtenido true
+    con tematico.... esperado false, obtenido false
+    resultado....... correcto
+
+=== Seleccion progresiva ===
+  Intersectan alguna zona................. 21683
+  Contenidas por completo................. 13123
+    diferencia (cruzan el borde).......... 8560
+  Intersectan y son hacia asentamientos... 6286
+  Excluyendo uso previo ya urbano......... 5524
+    excluidos (sin cambio real)........... 762
+
+=== Indicadores por uso previo ===
+  uso previo                       | transic. | superficie ha | tasa prom
+  Agricultura de temporal          |     1372 |    2723765.53 |      8.49
+  Agricultura de riego             |     1087 |    2135833.64 |      8.63
+  Pastizal inducido o cultivado    |      900 |     1710231.1 |      8.41
+  Vegetación secundaria            |      785 |    1429073.58 |      8.16
+  Vegetación primaria              |      751 |    1309548.14 |       8.6
+  Plantaciones forestales          |      399 |      724732.5 |      8.09
+  Cuerpos de agua                  |      230 |     411893.75 |      8.76
+
+--- resultado completo ---
+[
+	{
+		"transiciones" : 1372,
+		"usoPrevio" : "Agricultura de temporal",
+		"superficieTotalHa" : 2723765.53,
+		"tasaPromedio" : 8.49,
+		"tasaMinima" : -7.97,
+		"tasaMaxima" : 25.28
+	},
+	{
+		"transiciones" : 1087,
+		"usoPrevio" : "Agricultura de riego",
+		"superficieTotalHa" : 2135833.64,
+		"tasaPromedio" : 8.63,
+		"tasaMinima" : -7.99,
+		"tasaMaxima" : 25.27
+	},
+	{
+		"transiciones" : 900,
+		"usoPrevio" : "Pastizal inducido o cultivado",
+		"superficieTotalHa" : 1710231.1,
+		"tasaPromedio" : 8.41,
+		"tasaMinima" : -7.99,
+		"tasaMaxima" : 25.19
+	},
+	{
+		"transiciones" : 785,
+		"usoPrevio" : "Vegetación secundaria",
+		"superficieTotalHa" : 1429073.58,
+		"tasaPromedio" : 8.16,
+		"tasaMinima" : -7.92,
+		"tasaMaxima" : 25.28
+	},
+	{
+		"transiciones" : 751,
+		"usoPrevio" : "Vegetación primaria",
+		"superficieTotalHa" : 1309548.14,
+		"tasaPromedio" : 8.6,
+		"tasaMinima" : -8,
+		"tasaMaxima" : 25.22
+	},
+	{
+		"transiciones" : 399,
+		"usoPrevio" : "Plantaciones forestales",
+		"superficieTotalHa" : 724732.5,
+		"tasaPromedio" : 8.09,
+		"tasaMinima" : -7.96,
+		"tasaMaxima" : 25.19
+	},
+	{
+		"transiciones" : 230,
+		"usoPrevio" : "Cuerpos de agua",
+		"superficieTotalHa" : 411893.75,
+		"tasaPromedio" : 8.76,
+		"tasaMinima" : -7.99,
+		"tasaMaxima" : 25.27
+	}
+]
+
+Los cuatro casos de control se comportaron como se esperaba.
+La suma de los grupos coincide con la seleccion: 5524 documentos.
+
+LIMITE: los datos son sinteticos. Un conteo no es una tasa mientras no
+exista un denominador de exposicion, y una superposicion territorial no
+demuestra infraccion, responsabilidad ni causalidad.

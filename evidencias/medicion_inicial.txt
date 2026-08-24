@@ -52,7 +52,7 @@ Orden: {"cambio.tasa":-1}
 		"executionStages" : {
 			"stage" : "SORT",
 			"nReturned" : 14347,
-			"executionTimeMillisEstimate" : 3,
+			"executionTimeMillisEstimate" : 5,
 			"works" : 64350,
 			"advanced" : 14347,
 			"needTime" : 50002,
@@ -75,7 +75,7 @@ Orden: {"cambio.tasa":-1}
 					}
 				},
 				"nReturned" : 14347,
-				"executionTimeMillisEstimate" : 2,
+				"executionTimeMillisEstimate" : 1,
 				"works" : 50002,
 				"advanced" : 14347,
 				"needTime" : 35654,
@@ -107,7 +107,7 @@ Orden: ninguno
   nReturned............. 1880
   totalKeysExamined..... 0
   totalDocsExamined..... 50000
-  executionTimeMillis... 32
+  executionTimeMillis... 27
 
 --- explain completo ---
 {
@@ -162,7 +162,7 @@ Orden: ninguno
 	"executionStats" : {
 		"executionSuccess" : true,
 		"nReturned" : 1880,
-		"executionTimeMillis" : 32,
+		"executionTimeMillis" : 27,
 		"totalKeysExamined" : 0,
 		"totalDocsExamined" : 50000,
 		"executionStages" : {
@@ -187,7 +187,7 @@ Orden: ninguno
 				]
 			},
 			"nReturned" : 1880,
-			"executionTimeMillisEstimate" : 2,
+			"executionTimeMillisEstimate" : 1,
 			"works" : 50002,
 			"advanced" : 1880,
 			"needTime" : 48121,
@@ -218,7 +218,7 @@ Orden: ninguno
   nReturned............. 1196
   totalKeysExamined..... 0
   totalDocsExamined..... 50000
-  executionTimeMillis... 34
+  executionTimeMillis... 31
 
 --- explain completo ---
 {
@@ -263,7 +263,7 @@ Orden: ninguno
 	"executionStats" : {
 		"executionSuccess" : true,
 		"nReturned" : 1196,
-		"executionTimeMillis" : 34,
+		"executionTimeMillis" : 31,
 		"totalKeysExamined" : 0,
 		"totalDocsExamined" : 50000,
 		"executionStages" : {
@@ -283,7 +283,7 @@ Orden: ninguno
 				]
 			},
 			"nReturned" : 1196,
-			"executionTimeMillisEstimate" : 2,
+			"executionTimeMillisEstimate" : 3,
 			"works" : 50002,
 			"advanced" : 1196,
 			"needTime" : 48805,
