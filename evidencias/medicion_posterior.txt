@@ -1,0 +1,688 @@
+=== Indices creados ===
+[
+	{
+		"v" : 2,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_"
+	},
+	{
+		"v" : 2,
+		"key" : {
+			"usoActual" : 1,
+			"usoPrevio" : 1,
+			"cambio.tasa" : -1
+		},
+		"name" : "uso_tasa"
+	},
+	{
+		"v" : 2,
+		"key" : {
+			"usoActual" : 1,
+			"cambio.tasa" : -1
+		},
+		"name" : "uso_tasa_orden"
+	},
+	{
+		"v" : 2,
+		"key" : {
+			"usoActual" : 1,
+			"alcaldias" : 1
+		},
+		"name" : "uso_alcaldias"
+	}
+]
+
+=== Tamano de los indices (bytes) ===
+{
+	"_id_" : 536576,
+	"uso_tasa" : 929792,
+	"uso_tasa_orden" : 909312,
+	"uso_alcaldias" : 405504
+}
+
+=== Consulta A ===
+  Plan.................. FETCH <- IXSCAN
+  Indice................ uso_tasa_orden
+  Etapa SORT aparte..... no
+  Planes descartados.... 2
+  nReturned............. 14347
+  totalKeysExamined..... 14347
+  totalDocsExamined..... 14347  (antes: 50000)
+  executionTimeMillis... 37
+
+--- explain completo ---
+{
+	"queryPlanner" : {
+		"plannerVersion" : 1,
+		"namespace" : "m6_nosql.cambios_uso_suelo",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			"usoActual" : {
+				"$eq" : "Asentamientos humanos"
+			}
+		},
+		"winningPlan" : {
+			"stage" : "FETCH",
+			"inputStage" : {
+				"stage" : "IXSCAN",
+				"keyPattern" : {
+					"usoActual" : 1,
+					"cambio.tasa" : -1
+				},
+				"indexName" : "uso_tasa_orden",
+				"isMultiKey" : false,
+				"multiKeyPaths" : {
+					"usoActual" : [ ],
+					"cambio.tasa" : [ ]
+				},
+				"isUnique" : false,
+				"isSparse" : false,
+				"isPartial" : false,
+				"indexVersion" : 2,
+				"direction" : "forward",
+				"indexBounds" : {
+					"usoActual" : [
+						"[\"Asentamientos humanos\", \"Asentamientos humanos\"]"
+					],
+					"cambio.tasa" : [
+						"[MaxKey, MinKey]"
+					]
+				}
+			}
+		},
+		"rejectedPlans" : [
+			{
+				"stage" : "FETCH",
+				"inputStage" : {
+					"stage" : "SORT",
+					"sortPattern" : {
+						"cambio.tasa" : -1
+					},
+					"memLimit" : 104857600,
+					"type" : "default",
+					"inputStage" : {
+						"stage" : "IXSCAN",
+						"keyPattern" : {
+							"usoActual" : 1,
+							"usoPrevio" : 1,
+							"cambio.tasa" : -1
+						},
+						"indexName" : "uso_tasa",
+						"isMultiKey" : false,
+						"multiKeyPaths" : {
+							"usoActual" : [ ],
+							"usoPrevio" : [ ],
+							"cambio.tasa" : [ ]
+						},
+						"isUnique" : false,
+						"isSparse" : false,
+						"isPartial" : false,
+						"indexVersion" : 2,
+						"direction" : "forward",
+						"indexBounds" : {
+							"usoActual" : [
+								"[\"Asentamientos humanos\", \"Asentamientos humanos\"]"
+							],
+							"usoPrevio" : [
+								"[MinKey, MaxKey]"
+							],
+							"cambio.tasa" : [
+								"[MaxKey, MinKey]"
+							]
+						}
+					}
+				}
+			},
+			{
+				"stage" : "SORT",
+				"sortPattern" : {
+					"cambio.tasa" : -1
+				},
+				"memLimit" : 104857600,
+				"type" : "simple",
+				"inputStage" : {
+					"stage" : "FETCH",
+					"inputStage" : {
+						"stage" : "IXSCAN",
+						"keyPattern" : {
+							"usoActual" : 1,
+							"alcaldias" : 1
+						},
+						"indexName" : "uso_alcaldias",
+						"isMultiKey" : true,
+						"multiKeyPaths" : {
+							"usoActual" : [ ],
+							"alcaldias" : [
+								"alcaldias"
+							]
+						},
+						"isUnique" : false,
+						"isSparse" : false,
+						"isPartial" : false,
+						"indexVersion" : 2,
+						"direction" : "forward",
+						"indexBounds" : {
+							"usoActual" : [
+								"[\"Asentamientos humanos\", \"Asentamientos humanos\"]"
+							],
+							"alcaldias" : [
+								"[MinKey, MaxKey]"
+							]
+						}
+					}
+				}
+			}
+		]
+	},
+	"executionStats" : {
+		"executionSuccess" : true,
+		"nReturned" : 14347,
+		"executionTimeMillis" : 37,
+		"totalKeysExamined" : 14347,
+		"totalDocsExamined" : 14347,
+		"executionStages" : {
+			"stage" : "FETCH",
+			"nReturned" : 14347,
+			"executionTimeMillisEstimate" : 3,
+			"works" : 14348,
+			"advanced" : 14347,
+			"needTime" : 0,
+			"needYield" : 0,
+			"saveState" : 14,
+			"restoreState" : 14,
+			"isEOF" : 1,
+			"docsExamined" : 14347,
+			"alreadyHasObj" : 0,
+			"inputStage" : {
+				"stage" : "IXSCAN",
+				"nReturned" : 14347,
+				"executionTimeMillisEstimate" : 1,
+				"works" : 14348,
+				"advanced" : 14347,
+				"needTime" : 0,
+				"needYield" : 0,
+				"saveState" : 14,
+				"restoreState" : 14,
+				"isEOF" : 1,
+				"keyPattern" : {
+					"usoActual" : 1,
+					"cambio.tasa" : -1
+				},
+				"indexName" : "uso_tasa_orden",
+				"isMultiKey" : false,
+				"multiKeyPaths" : {
+					"usoActual" : [ ],
+					"cambio.tasa" : [ ]
+				},
+				"isUnique" : false,
+				"isSparse" : false,
+				"isPartial" : false,
+				"indexVersion" : 2,
+				"direction" : "forward",
+				"indexBounds" : {
+					"usoActual" : [
+						"[\"Asentamientos humanos\", \"Asentamientos humanos\"]"
+					],
+					"cambio.tasa" : [
+						"[MaxKey, MinKey]"
+					]
+				},
+				"keysExamined" : 14347,
+				"seeks" : 1,
+				"dupsTested" : 0,
+				"dupsDropped" : 0
+			}
+		}
+	},
+	"serverInfo" : {
+		"host" : "ip-172-31-8-137",
+		"port" : 27017,
+		"version" : "4.4.29",
+		"gitVersion" : "f4dda329a99811c707eb06d05ad023599f9be263"
+	},
+	"ok" : 1
+}
+
+=== Consulta B ===
+  Plan.................. FETCH <- IXSCAN
+  Indice................ uso_tasa
+  Etapa SORT aparte..... no
+  Planes descartados.... 2
+  nReturned............. 1880
+  totalKeysExamined..... 1880
+  totalDocsExamined..... 1880  (antes: 50000)
+  executionTimeMillis... 8
+
+--- explain completo ---
+{
+	"queryPlanner" : {
+		"plannerVersion" : 1,
+		"namespace" : "m6_nosql.cambios_uso_suelo",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			"$and" : [
+				{
+					"usoActual" : {
+						"$eq" : "Asentamientos humanos"
+					}
+				},
+				{
+					"usoPrevio" : {
+						"$eq" : "Agricultura de temporal"
+					}
+				},
+				{
+					"cambio.tasa" : {
+						"$gte" : 5
+					}
+				}
+			]
+		},
+		"winningPlan" : {
+			"stage" : "FETCH",
+			"inputStage" : {
+				"stage" : "IXSCAN",
+				"keyPattern" : {
+					"usoActual" : 1,
+					"usoPrevio" : 1,
+					"cambio.tasa" : -1
+				},
+				"indexName" : "uso_tasa",
+				"isMultiKey" : false,
+				"multiKeyPaths" : {
+					"usoActual" : [ ],
+					"usoPrevio" : [ ],
+					"cambio.tasa" : [ ]
+				},
+				"isUnique" : false,
+				"isSparse" : false,
+				"isPartial" : false,
+				"indexVersion" : 2,
+				"direction" : "forward",
+				"indexBounds" : {
+					"usoActual" : [
+						"[\"Asentamientos humanos\", \"Asentamientos humanos\"]"
+					],
+					"usoPrevio" : [
+						"[\"Agricultura de temporal\", \"Agricultura de temporal\"]"
+					],
+					"cambio.tasa" : [
+						"[inf.0, 5.0]"
+					]
+				}
+			}
+		},
+		"rejectedPlans" : [
+			{
+				"stage" : "FETCH",
+				"filter" : {
+					"usoPrevio" : {
+						"$eq" : "Agricultura de temporal"
+					}
+				},
+				"inputStage" : {
+					"stage" : "IXSCAN",
+					"keyPattern" : {
+						"usoActual" : 1,
+						"cambio.tasa" : -1
+					},
+					"indexName" : "uso_tasa_orden",
+					"isMultiKey" : false,
+					"multiKeyPaths" : {
+						"usoActual" : [ ],
+						"cambio.tasa" : [ ]
+					},
+					"isUnique" : false,
+					"isSparse" : false,
+					"isPartial" : false,
+					"indexVersion" : 2,
+					"direction" : "forward",
+					"indexBounds" : {
+						"usoActual" : [
+							"[\"Asentamientos humanos\", \"Asentamientos humanos\"]"
+						],
+						"cambio.tasa" : [
+							"[inf.0, 5.0]"
+						]
+					}
+				}
+			},
+			{
+				"stage" : "FETCH",
+				"filter" : {
+					"$and" : [
+						{
+							"cambio.tasa" : {
+								"$gte" : 5
+							}
+						},
+						{
+							"usoPrevio" : {
+								"$eq" : "Agricultura de temporal"
+							}
+						}
+					]
+				},
+				"inputStage" : {
+					"stage" : "IXSCAN",
+					"keyPattern" : {
+						"usoActual" : 1,
+						"alcaldias" : 1
+					},
+					"indexName" : "uso_alcaldias",
+					"isMultiKey" : true,
+					"multiKeyPaths" : {
+						"usoActual" : [ ],
+						"alcaldias" : [
+							"alcaldias"
+						]
+					},
+					"isUnique" : false,
+					"isSparse" : false,
+					"isPartial" : false,
+					"indexVersion" : 2,
+					"direction" : "forward",
+					"indexBounds" : {
+						"usoActual" : [
+							"[\"Asentamientos humanos\", \"Asentamientos humanos\"]"
+						],
+						"alcaldias" : [
+							"[MinKey, MaxKey]"
+						]
+					}
+				}
+			}
+		]
+	},
+	"executionStats" : {
+		"executionSuccess" : true,
+		"nReturned" : 1880,
+		"executionTimeMillis" : 8,
+		"totalKeysExamined" : 1880,
+		"totalDocsExamined" : 1880,
+		"executionStages" : {
+			"stage" : "FETCH",
+			"nReturned" : 1880,
+			"executionTimeMillisEstimate" : 0,
+			"works" : 1881,
+			"advanced" : 1880,
+			"needTime" : 0,
+			"needYield" : 0,
+			"saveState" : 2,
+			"restoreState" : 2,
+			"isEOF" : 1,
+			"docsExamined" : 1880,
+			"alreadyHasObj" : 0,
+			"inputStage" : {
+				"stage" : "IXSCAN",
+				"nReturned" : 1880,
+				"executionTimeMillisEstimate" : 0,
+				"works" : 1881,
+				"advanced" : 1880,
+				"needTime" : 0,
+				"needYield" : 0,
+				"saveState" : 2,
+				"restoreState" : 2,
+				"isEOF" : 1,
+				"keyPattern" : {
+					"usoActual" : 1,
+					"usoPrevio" : 1,
+					"cambio.tasa" : -1
+				},
+				"indexName" : "uso_tasa",
+				"isMultiKey" : false,
+				"multiKeyPaths" : {
+					"usoActual" : [ ],
+					"usoPrevio" : [ ],
+					"cambio.tasa" : [ ]
+				},
+				"isUnique" : false,
+				"isSparse" : false,
+				"isPartial" : false,
+				"indexVersion" : 2,
+				"direction" : "forward",
+				"indexBounds" : {
+					"usoActual" : [
+						"[\"Asentamientos humanos\", \"Asentamientos humanos\"]"
+					],
+					"usoPrevio" : [
+						"[\"Agricultura de temporal\", \"Agricultura de temporal\"]"
+					],
+					"cambio.tasa" : [
+						"[inf.0, 5.0]"
+					]
+				},
+				"keysExamined" : 1880,
+				"seeks" : 1,
+				"dupsTested" : 0,
+				"dupsDropped" : 0
+			}
+		}
+	},
+	"serverInfo" : {
+		"host" : "ip-172-31-8-137",
+		"port" : 27017,
+		"version" : "4.4.29",
+		"gitVersion" : "f4dda329a99811c707eb06d05ad023599f9be263"
+	},
+	"ok" : 1
+}
+
+=== Consulta C ===
+  Plan.................. FETCH <- IXSCAN
+  Indice................ uso_alcaldias
+  Etapa SORT aparte..... no
+  Planes descartados.... 2
+  nReturned............. 1196
+  totalKeysExamined..... 1196
+  totalDocsExamined..... 1196  (antes: 50000)
+  executionTimeMillis... 8
+
+--- explain completo ---
+{
+	"queryPlanner" : {
+		"plannerVersion" : 1,
+		"namespace" : "m6_nosql.cambios_uso_suelo",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			"$and" : [
+				{
+					"alcaldias" : {
+						"$eq" : "Xochimilco"
+					}
+				},
+				{
+					"usoActual" : {
+						"$eq" : "Asentamientos humanos"
+					}
+				}
+			]
+		},
+		"winningPlan" : {
+			"stage" : "FETCH",
+			"inputStage" : {
+				"stage" : "IXSCAN",
+				"keyPattern" : {
+					"usoActual" : 1,
+					"alcaldias" : 1
+				},
+				"indexName" : "uso_alcaldias",
+				"isMultiKey" : true,
+				"multiKeyPaths" : {
+					"usoActual" : [ ],
+					"alcaldias" : [
+						"alcaldias"
+					]
+				},
+				"isUnique" : false,
+				"isSparse" : false,
+				"isPartial" : false,
+				"indexVersion" : 2,
+				"direction" : "forward",
+				"indexBounds" : {
+					"usoActual" : [
+						"[\"Asentamientos humanos\", \"Asentamientos humanos\"]"
+					],
+					"alcaldias" : [
+						"[\"Xochimilco\", \"Xochimilco\"]"
+					]
+				}
+			}
+		},
+		"rejectedPlans" : [
+			{
+				"stage" : "FETCH",
+				"filter" : {
+					"alcaldias" : {
+						"$eq" : "Xochimilco"
+					}
+				},
+				"inputStage" : {
+					"stage" : "IXSCAN",
+					"keyPattern" : {
+						"usoActual" : 1,
+						"usoPrevio" : 1,
+						"cambio.tasa" : -1
+					},
+					"indexName" : "uso_tasa",
+					"isMultiKey" : false,
+					"multiKeyPaths" : {
+						"usoActual" : [ ],
+						"usoPrevio" : [ ],
+						"cambio.tasa" : [ ]
+					},
+					"isUnique" : false,
+					"isSparse" : false,
+					"isPartial" : false,
+					"indexVersion" : 2,
+					"direction" : "forward",
+					"indexBounds" : {
+						"usoActual" : [
+							"[\"Asentamientos humanos\", \"Asentamientos humanos\"]"
+						],
+						"usoPrevio" : [
+							"[MinKey, MaxKey]"
+						],
+						"cambio.tasa" : [
+							"[MaxKey, MinKey]"
+						]
+					}
+				}
+			},
+			{
+				"stage" : "FETCH",
+				"filter" : {
+					"alcaldias" : {
+						"$eq" : "Xochimilco"
+					}
+				},
+				"inputStage" : {
+					"stage" : "IXSCAN",
+					"keyPattern" : {
+						"usoActual" : 1,
+						"cambio.tasa" : -1
+					},
+					"indexName" : "uso_tasa_orden",
+					"isMultiKey" : false,
+					"multiKeyPaths" : {
+						"usoActual" : [ ],
+						"cambio.tasa" : [ ]
+					},
+					"isUnique" : false,
+					"isSparse" : false,
+					"isPartial" : false,
+					"indexVersion" : 2,
+					"direction" : "forward",
+					"indexBounds" : {
+						"usoActual" : [
+							"[\"Asentamientos humanos\", \"Asentamientos humanos\"]"
+						],
+						"cambio.tasa" : [
+							"[MaxKey, MinKey]"
+						]
+					}
+				}
+			}
+		]
+	},
+	"executionStats" : {
+		"executionSuccess" : true,
+		"nReturned" : 1196,
+		"executionTimeMillis" : 8,
+		"totalKeysExamined" : 1196,
+		"totalDocsExamined" : 1196,
+		"executionStages" : {
+			"stage" : "FETCH",
+			"nReturned" : 1196,
+			"executionTimeMillisEstimate" : 0,
+			"works" : 1197,
+			"advanced" : 1196,
+			"needTime" : 0,
+			"needYield" : 0,
+			"saveState" : 1,
+			"restoreState" : 1,
+			"isEOF" : 1,
+			"docsExamined" : 1196,
+			"alreadyHasObj" : 0,
+			"inputStage" : {
+				"stage" : "IXSCAN",
+				"nReturned" : 1196,
+				"executionTimeMillisEstimate" : 0,
+				"works" : 1197,
+				"advanced" : 1196,
+				"needTime" : 0,
+				"needYield" : 0,
+				"saveState" : 1,
+				"restoreState" : 1,
+				"isEOF" : 1,
+				"keyPattern" : {
+					"usoActual" : 1,
+					"alcaldias" : 1
+				},
+				"indexName" : "uso_alcaldias",
+				"isMultiKey" : true,
+				"multiKeyPaths" : {
+					"usoActual" : [ ],
+					"alcaldias" : [
+						"alcaldias"
+					]
+				},
+				"isUnique" : false,
+				"isSparse" : false,
+				"isPartial" : false,
+				"indexVersion" : 2,
+				"direction" : "forward",
+				"indexBounds" : {
+					"usoActual" : [
+						"[\"Asentamientos humanos\", \"Asentamientos humanos\"]"
+					],
+					"alcaldias" : [
+						"[\"Xochimilco\", \"Xochimilco\"]"
+					]
+				},
+				"keysExamined" : 1196,
+				"seeks" : 1,
+				"dupsTested" : 1196,
+				"dupsDropped" : 0
+			}
+		}
+	},
+	"serverInfo" : {
+		"host" : "ip-172-31-8-137",
+		"port" : 27017,
+		"version" : "4.4.29",
+		"gitVersion" : "f4dda329a99811c707eb06d05ad023599f9be263"
+	},
+	"ok" : 1
+}
+
+=== Comparacion antes y despues ===
+Consulta | Indice          | Docs antes | Docs despues | Reduccion | Devueltos
+   A     | uso_tasa_orden | 50000 | 14347 | 71.3 % | 14347
+   B     | uso_tasa | 50000 | 1880 | 96.2 % | 1880
+   C     | uso_alcaldias | 50000 | 1196 | 97.6 % | 1196
+
+Los resultados coinciden con la medicion inicial en las tres consultas.
+La consulta A resuelve el ordenamiento con el indice, sin etapa SORT.

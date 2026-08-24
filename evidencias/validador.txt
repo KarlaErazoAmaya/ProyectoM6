@@ -1,0 +1,60 @@
+=== Comprobacion previa sobre los documentos existentes ===
+  cambio.tasa no numerica....... 0
+  alcaldias vacio............... 0
+  sin geometria................. 0
+  usoActual fuera del dominio... 0
+
+=== Validador aplicado ===
+  validationLevel....... moderate
+  validationAction...... error
+
+=== Casos de prueba ===
+
+  valido-01-completo
+    esperado.. aceptado
+    obtenido.. aceptado
+    regla..... cumple el esquema completo
+    resultado. correcto
+
+  valido-02-usos-nulos
+    esperado.. aceptado
+    obtenido.. aceptado
+    regla..... null admitido en usoPrevio, usoActual y cambio.descripcion
+    resultado. correcto
+
+  invalido-01-falta-geometria
+    esperado.. rechazado
+    obtenido.. rechazado (codigo 121)
+    regla..... required incluye geometria
+    resultado. correcto
+
+  invalido-02-superficie-negativa
+    esperado.. rechazado
+    obtenido.. rechazado (codigo 121)
+    regla..... minimum 0 en superficie.usoPrevioHa
+    resultado. correcto
+
+  invalido-03-categoria-inexistente
+    esperado.. rechazado
+    obtenido.. rechazado (codigo 121)
+    regla..... enum de usoActual no contiene la categoria
+    resultado. correcto
+
+  invalido-04-geometria-punto
+    esperado.. rechazado
+    obtenido.. rechazado (codigo 121)
+    regla..... enum de geometria.type admite solo Polygon y MultiPolygon
+    resultado. correcto
+
+  invalido-05-alcaldias-vacio
+    esperado.. rechazado
+    obtenido.. rechazado (codigo 121)
+    regla..... minItems 1 en alcaldias
+    resultado. correcto
+
+=== Limpieza ===
+  Documentos de prueba eliminados: 2
+  Documentos en la coleccion: 50000
+
+Los siete casos coinciden con el resultado esperado.
+validationLevel final: strict

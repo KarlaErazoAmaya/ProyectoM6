@@ -1,0 +1,314 @@
+=== Indices disponibles ===
+  _id_
+
+=== Consulta A ===
+Pregunta: Que transiciones hacia asentamientos humanos presentan las tasas de cambio mas altas
+Filtro: {"usoActual":"Asentamientos humanos"}
+Orden: {"cambio.tasa":-1}
+
+  Plan.................. SORT <- COLLSCAN
+  Etapa SORT aparte..... si
+  nReturned............. 14347
+  totalKeysExamined..... 0
+  totalDocsExamined..... 50000
+  executionTimeMillis... 38
+
+--- explain completo ---
+{
+	"queryPlanner" : {
+		"plannerVersion" : 1,
+		"namespace" : "m6_nosql.cambios_uso_suelo",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			"usoActual" : {
+				"$eq" : "Asentamientos humanos"
+			}
+		},
+		"winningPlan" : {
+			"stage" : "SORT",
+			"sortPattern" : {
+				"cambio.tasa" : -1
+			},
+			"memLimit" : 104857600,
+			"type" : "simple",
+			"inputStage" : {
+				"stage" : "COLLSCAN",
+				"filter" : {
+					"usoActual" : {
+						"$eq" : "Asentamientos humanos"
+					}
+				},
+				"direction" : "forward"
+			}
+		},
+		"rejectedPlans" : [ ]
+	},
+	"executionStats" : {
+		"executionSuccess" : true,
+		"nReturned" : 14347,
+		"executionTimeMillis" : 38,
+		"totalKeysExamined" : 0,
+		"totalDocsExamined" : 50000,
+		"executionStages" : {
+			"stage" : "SORT",
+			"nReturned" : 14347,
+			"executionTimeMillisEstimate" : 3,
+			"works" : 64350,
+			"advanced" : 14347,
+			"needTime" : 50002,
+			"needYield" : 0,
+			"saveState" : 64,
+			"restoreState" : 64,
+			"isEOF" : 1,
+			"sortPattern" : {
+				"cambio.tasa" : -1
+			},
+			"memLimit" : 104857600,
+			"type" : "simple",
+			"totalDataSizeSorted" : 10805007,
+			"usedDisk" : false,
+			"inputStage" : {
+				"stage" : "COLLSCAN",
+				"filter" : {
+					"usoActual" : {
+						"$eq" : "Asentamientos humanos"
+					}
+				},
+				"nReturned" : 14347,
+				"executionTimeMillisEstimate" : 2,
+				"works" : 50002,
+				"advanced" : 14347,
+				"needTime" : 35654,
+				"needYield" : 0,
+				"saveState" : 64,
+				"restoreState" : 64,
+				"isEOF" : 1,
+				"direction" : "forward",
+				"docsExamined" : 50000
+			}
+		}
+	},
+	"serverInfo" : {
+		"host" : "ip-172-31-8-137",
+		"port" : 27017,
+		"version" : "4.4.29",
+		"gitVersion" : "f4dda329a99811c707eb06d05ad023599f9be263"
+	},
+	"ok" : 1
+}
+
+=== Consulta B ===
+Pregunta: Que superficie de agricultura de temporal se transformo en asentamientos humanos con tasas superiores al 5 por ciento
+Filtro: {"usoActual":"Asentamientos humanos","usoPrevio":"Agricultura de temporal","cambio.tasa":{"$gte":5}}
+Orden: ninguno
+
+  Plan.................. COLLSCAN
+  Etapa SORT aparte..... no
+  nReturned............. 1880
+  totalKeysExamined..... 0
+  totalDocsExamined..... 50000
+  executionTimeMillis... 32
+
+--- explain completo ---
+{
+	"queryPlanner" : {
+		"plannerVersion" : 1,
+		"namespace" : "m6_nosql.cambios_uso_suelo",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			"$and" : [
+				{
+					"usoActual" : {
+						"$eq" : "Asentamientos humanos"
+					}
+				},
+				{
+					"usoPrevio" : {
+						"$eq" : "Agricultura de temporal"
+					}
+				},
+				{
+					"cambio.tasa" : {
+						"$gte" : 5
+					}
+				}
+			]
+		},
+		"winningPlan" : {
+			"stage" : "COLLSCAN",
+			"filter" : {
+				"$and" : [
+					{
+						"usoActual" : {
+							"$eq" : "Asentamientos humanos"
+						}
+					},
+					{
+						"usoPrevio" : {
+							"$eq" : "Agricultura de temporal"
+						}
+					},
+					{
+						"cambio.tasa" : {
+							"$gte" : 5
+						}
+					}
+				]
+			},
+			"direction" : "forward"
+		},
+		"rejectedPlans" : [ ]
+	},
+	"executionStats" : {
+		"executionSuccess" : true,
+		"nReturned" : 1880,
+		"executionTimeMillis" : 32,
+		"totalKeysExamined" : 0,
+		"totalDocsExamined" : 50000,
+		"executionStages" : {
+			"stage" : "COLLSCAN",
+			"filter" : {
+				"$and" : [
+					{
+						"usoActual" : {
+							"$eq" : "Asentamientos humanos"
+						}
+					},
+					{
+						"usoPrevio" : {
+							"$eq" : "Agricultura de temporal"
+						}
+					},
+					{
+						"cambio.tasa" : {
+							"$gte" : 5
+						}
+					}
+				]
+			},
+			"nReturned" : 1880,
+			"executionTimeMillisEstimate" : 2,
+			"works" : 50002,
+			"advanced" : 1880,
+			"needTime" : 48121,
+			"needYield" : 0,
+			"saveState" : 50,
+			"restoreState" : 50,
+			"isEOF" : 1,
+			"direction" : "forward",
+			"docsExamined" : 50000
+		}
+	},
+	"serverInfo" : {
+		"host" : "ip-172-31-8-137",
+		"port" : 27017,
+		"version" : "4.4.29",
+		"gitVersion" : "f4dda329a99811c707eb06d05ad023599f9be263"
+	},
+	"ok" : 1
+}
+
+=== Consulta C ===
+Pregunta: Que transiciones hacia asentamientos humanos afectan a una alcaldia determinada
+Filtro: {"usoActual":"Asentamientos humanos","alcaldias":"Xochimilco"}
+Orden: ninguno
+
+  Plan.................. COLLSCAN
+  Etapa SORT aparte..... no
+  nReturned............. 1196
+  totalKeysExamined..... 0
+  totalDocsExamined..... 50000
+  executionTimeMillis... 34
+
+--- explain completo ---
+{
+	"queryPlanner" : {
+		"plannerVersion" : 1,
+		"namespace" : "m6_nosql.cambios_uso_suelo",
+		"indexFilterSet" : false,
+		"parsedQuery" : {
+			"$and" : [
+				{
+					"alcaldias" : {
+						"$eq" : "Xochimilco"
+					}
+				},
+				{
+					"usoActual" : {
+						"$eq" : "Asentamientos humanos"
+					}
+				}
+			]
+		},
+		"winningPlan" : {
+			"stage" : "COLLSCAN",
+			"filter" : {
+				"$and" : [
+					{
+						"alcaldias" : {
+							"$eq" : "Xochimilco"
+						}
+					},
+					{
+						"usoActual" : {
+							"$eq" : "Asentamientos humanos"
+						}
+					}
+				]
+			},
+			"direction" : "forward"
+		},
+		"rejectedPlans" : [ ]
+	},
+	"executionStats" : {
+		"executionSuccess" : true,
+		"nReturned" : 1196,
+		"executionTimeMillis" : 34,
+		"totalKeysExamined" : 0,
+		"totalDocsExamined" : 50000,
+		"executionStages" : {
+			"stage" : "COLLSCAN",
+			"filter" : {
+				"$and" : [
+					{
+						"alcaldias" : {
+							"$eq" : "Xochimilco"
+						}
+					},
+					{
+						"usoActual" : {
+							"$eq" : "Asentamientos humanos"
+						}
+					}
+				]
+			},
+			"nReturned" : 1196,
+			"executionTimeMillisEstimate" : 2,
+			"works" : 50002,
+			"advanced" : 1196,
+			"needTime" : 48805,
+			"needYield" : 0,
+			"saveState" : 50,
+			"restoreState" : 50,
+			"isEOF" : 1,
+			"direction" : "forward",
+			"docsExamined" : 50000
+		}
+	},
+	"serverInfo" : {
+		"host" : "ip-172-31-8-137",
+		"port" : 27017,
+		"version" : "4.4.29",
+		"gitVersion" : "f4dda329a99811c707eb06d05ad023599f9be263"
+	},
+	"ok" : 1
+}
+
+=== Resumen de la medicion inicial ===
+Consulta | Plan                | SORT | Devueltos | Claves | Documentos
+   A     | SORT <- COLLSCAN |  si  | 14347 | 0 | 50000
+   B     | COLLSCAN |  no  | 1880 | 0 | 50000
+   C     | COLLSCAN |  no  | 1196 | 0 | 50000
+
+Las tres consultas recorrieron la coleccion completa sin indice.
+Conserva estos valores: son la referencia de 03_indices.js
