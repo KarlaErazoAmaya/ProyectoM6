@@ -444,6 +444,129 @@ Si `mongoimport` se detiene en `0B (0.0%)`, el servidor de MongoDB no está en e
 
 ---
 
+## Resultados
+
+Los resultados deben interpretarse distinguiendo el conjunto real del conjunto sintético. Las cifras obtenidas durante las consultas de rendimiento y el análisis geoespacial corresponden a los 50 000 documentos sintéticos y demuestran el funcionamiento de la solución; no representan 50 000 transformaciones reales ocurridas en la Ciudad de México.
+
+### Respuesta a la pregunta principal
+
+El análisis permitió identificar transformaciones hacia asentamientos humanos provenientes de distintos usos de suelo y detectar cuáles presentan superposición espacial con las zonas de conservación utilizadas como referencia.
+
+Entre las transformaciones que intersectaron estas zonas, los usos previos con mayor presencia fueron **Agricultura de temporal**, **Agricultura de riego** y **Pastizal inducido o cultivado**.
+
+Por lo tanto, el modelo permite combinar atributos descriptivos y geometrías para estudiar tanto el tipo de transformación como su distribución espacial.
+
+### Resultados de las preguntas específicas
+
+#### 1. Transformaciones hacia asentamientos humanos
+
+La consulta sobre `usoActual: "Asentamientos humanos"` devolvió **14 347 documentos sintéticos**. Estos registros pueden ordenarse por `cambio.tasa` para identificar las transformaciones de mayor intensidad.
+
+#### 2. Agricultura de temporal y tasa de cambio
+
+Al restringir la consulta a:
+
+- uso previo: `Agricultura de temporal`;
+- uso actual: `Asentamientos humanos`;
+- tasa de cambio mayor o igual a 5;
+
+se obtuvieron **1 880 documentos sintéticos**.
+
+Esta consulta también permitió evaluar el efecto de la indexación: el número de documentos examinados disminuyó de **50 000 a 1 880**, manteniendo el mismo número de resultados.
+
+#### 3. Superposición espacial
+
+La consulta con `$geoIntersects` identificó **21 683 documentos** que intersectan alguna de las tres zonas de conservación sintéticas utilizadas como referencia.
+
+Al incorporar el filtro hacia asentamientos humanos se obtuvieron **6 286 registros**. Después de excluir aquellos cuyo uso previo ya era `Asentamientos humanos`, quedaron **5 524 transformaciones efectivas**.
+
+Estas se distribuyeron según su uso previo de la siguiente manera:
+
+| Uso previo | Transiciones |
+|---|---:|
+| Agricultura de temporal | 1 372 |
+| Agricultura de riego | 1 087 |
+| Pastizal inducido o cultivado | 900 |
+| Vegetación secundaria | 785 |
+| Vegetación primaria | 751 |
+| Plantaciones forestales | 399 |
+| Cuerpos de agua | 230 |
+
+Estos resultados muestran la capacidad del componente geoespacial para identificar y clasificar las transformaciones que presentan una relación de intersección con las zonas utilizadas como referencia.
+
+### Resultados técnicos
+
+Además del análisis temático, se obtuvieron los siguientes resultados técnicos:
+
+- Las tres consultas evaluadas pasaron de planes basados en `COLLSCAN` a planes que utilizan `IXSCAN`.
+- La consulta A redujo los documentos examinados de 50 000 a 14 347.
+- La consulta B redujo los documentos examinados de 50 000 a 1 880.
+- La consulta C redujo los documentos examinados de 50 000 a 1 196.
+- El validador `$jsonSchema` aceptó los casos válidos y rechazó los cinco casos inválidos definidos.
+- El índice `2dsphere` permitió implementar las consultas geoespaciales.
+- Se implementó una salida minimizada que excluye la geometría completa cuando no es necesaria para el análisis.
+
+---
+
+## Evaluación del componente temporal
+
+Se evaluó la pertinencia de incorporar un análisis temporal al proyecto.
+
+Aunque la fuente original describe transformaciones ocurridas dentro del periodo 1992–2016, los documentos no contienen una fecha individual de ocurrencia asociada a cada transición.
+
+Por esta razón, no resulta metodológicamente adecuado asignar fechas artificiales, realizar agrupaciones por año o construir una serie temporal que la fuente no permite observar.
+
+Se decidió no implementar un análisis temporal específico y fortalecer en su lugar el componente geoespacial, ya que las geometrías GeoJSON sí forman parte de los datos disponibles y permiten responder directamente a la pregunta de investigación.
+
+Esta decisión constituye también una limitación del análisis: los resultados permiten estudiar las transformaciones registradas y su distribución espacial, pero no reconstruir su evolución año con año.
+
+---
+
+## Seguridad y protección de datos
+
+Los datos utilizados son públicos y no contienen información personal. Por ello, las medidas de protección se enfocaron principalmente en **minimización de información** y **principio de mínimo privilegio**.
+
+### Minimización
+
+Se implementó una consulta que devuelve únicamente los campos necesarios para el análisis:
+
+- `usoPrevio`;
+- `usoActual`;
+- `superficie`;
+- `cambio.tasa`;
+- `alcaldias`.
+
+La geometría completa se excluye de esta salida cuando no es necesaria, reduciendo la cantidad de información transferida.
+
+La prueba mostró cinco documentos y confirmó que la geometría completa no estaba incluida en la salida.
+
+### Mínimo privilegio
+
+Se plantearon roles diferenciados según las necesidades de cada usuario o proceso. Un usuario dedicado a consultas debería disponer únicamente de permisos de lectura sobre las colecciones necesarias, mientras que los procesos de carga deberían recibir solamente los permisos indispensables para realizar sus operaciones.
+
+En el entorno utilizado no se habilitó autenticación, por lo que el mínimo privilegio se documenta como una propuesta de diseño y no como una denegación de acceso comprobada.
+
+Las credenciales y cadenas de conexión no deben almacenarse directamente en el código del proyecto.
+
+---
+
+## Conclusiones
+
+El proyecto permitió integrar los principales componentes estudiados en el módulo mediante una solución reproducible en MongoDB para el análisis de cambios de uso de suelo.
+
+El modelo documental permitió almacenar conjuntamente los atributos descriptivos de cada transición y su geometría GeoJSON. A partir de los patrones de consulta se diseñaron índices específicos cuya utilidad se comprobó mediante `explain("executionStats")`, reduciendo considerablemente el número de documentos examinados sin modificar los resultados obtenidos.
+
+La validación mediante `$jsonSchema` permitió establecer reglas de calidad para los documentos, mientras que el componente geoespacial permitió identificar superposiciones entre las transformaciones hacia asentamientos humanos y las zonas utilizadas como referencia.
+
+El análisis temporal no se implementó debido a la ausencia de una fecha individual para cada transición. En lugar de introducir fechas artificiales, se fortaleció el análisis geoespacial.
+
+Finalmente, se incorporaron principios básicos de seguridad mediante minimización de información y una propuesta de mínimo privilegio.
+
+La principal limitación es que las pruebas de rendimiento y los resultados cuantitativos del análisis geoespacial se realizaron sobre datos sintéticos. Por ello, estos resultados demuestran el funcionamiento de la solución, pero no deben interpretarse como una medición de la magnitud real de la expansión urbana de la Ciudad de México.
+
+Como trabajo futuro se propone incorporar polígonos oficiales de suelo de conservación, derivar las alcaldías del conjunto real mediante intersección con límites administrativos y, si se dispone de información con fechas individuales, ampliar el proyecto hacia un análisis temporal.
+
+
 ## Estructura del repositorio
 
 ```text
@@ -462,20 +585,27 @@ ProyectoM6/
 │   ├── 02_consultas_base.js
 │   ├── 03_indices.js
 │   ├── 04_validador.js
-│   └── 05_geoespacial.js
+│   ├── 05_geoespacial.js
+│   └── 06_seguridad.js
 │
 ├── docs/
 │   ├── PROCEDENCIA_DATOS.md
 │   ├── medicion_inicial.md
 │   ├── indexacion.md
-│   └── validacion.md
-|   └── zonas_conservacion.json
-|   └── casos_control_geo.json
+│   ├── validacion.md
+│   ├── casos_control_geoespacial.md
+│   ├── pipeline_geoespacial.md
+│   └── semana04_temporal.md
+│
+├── zonas_conservacion.json
+├── casos_control_geo.json
 │
 └── evidencias/
     ├── medicion_inicial.txt
     ├── medicion_posterior.txt
-    └── validador.txt
+    ├── validador.txt
+    ├── geoespacial.txt
+    └── mapa_asentamientos_humanos...
 ```
 
 El conjunto sintético no se versiona: pesa 35 MB, es un archivo generado y `generar_sinteticos.py` lo reproduce de forma idéntica gracias a su semilla fija. Se conserva en Amazon S3.
@@ -503,11 +633,12 @@ El conjunto sintético no se versiona: pesa 35 MB, es un archivo generado y `gen
 - [x] Índice geoespacial `2dsphere`
 - [x] Consultas geoespaciales
 - [x] Seguridad y protección de datos
-- [ ] Interpretación de resultados
-- [ ] Conclusiones
+- [x] Interpretación de resultados
+- [x] Conclusiones
 
-### Decisiones pendientes
+## Mejoras futuras
 
-- Incorporar la colección de polígonos de suelo de conservación que requiere la tercera pregunta, y registrar su procedencia, sistema de referencia y fecha de consulta.
-- Derivar el campo `alcaldias` para el conjunto real cruzando la geometría con los límites de las demarcaciones.
-- Verificar en Amazon DocumentDB, por separado y en la versión objetivo: el alcance de `$jsonSchema`, el soporte de índices `2dsphere` sobre geometrías `Polygon`, el comportamiento de `$geoIntersects` y la disponibilidad de `$geoNear` como primera etapa de un pipeline. Un plan de ejecución o una regla admitida en MongoDB Community no debe atribuirse a DocumentDB sin comprobación propia.
+- Incorporar polígonos oficiales de suelo de conservación y documentar su procedencia, sistema de referencia y fecha de consulta.
+- Derivar el campo `alcaldias` para el conjunto real mediante intersección con los límites oficiales de las demarcaciones.
+- Incorporar información con fechas individuales de transición para permitir un análisis temporal.
+- Verificar de manera independiente la compatibilidad de `$jsonSchema`, índices `2dsphere`, `$geoIntersects` y `$geoNear` en la versión objetivo de Amazon DocumentDB.
